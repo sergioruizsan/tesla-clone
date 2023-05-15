@@ -32,7 +32,39 @@ import Logo from "./Logo.astro";
       <li><a href="">Menu</a></li>
     </ul>
   </nav>
+  <div
+    id="menu-backdrop"
+    class={`
+      absolute bg-black/5 backdrop-blur-lg rounded
+      left-[var(--left)]
+      top-[var(--top)]
+      w-[var(--width)] h-[var(--height)]
+      transition-all duration-500
+      ease-in-out opacity-0 -z-10
+    `}
+  >
+  </div>
 </header>
+
+<script>
+  const $items = document.querySelectorAll("#landing-header li");
+  const $backdrop = document.querySelector("#menu-backdrop") as HTMLElement;
+
+  $items.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const { left, top, width, height } = item.getBoundingClientRect();
+      $backdrop.style.setProperty("--left", `${left}px`);
+      $backdrop.style.setProperty("--top", `${top}px`);
+      $backdrop.style.setProperty("--width", `${width}px`);
+      $backdrop.style.setProperty("--height", `${height}px`);
+      $backdrop.classList.add("opacity-100");
+    });
+
+    item.addEventListener("mouseleave", () => {
+      $backdrop.classList.remove("opacity-100");
+    });
+  });
+</script>
 
 <script>
   const $header = document.querySelector("#landing-header") as HTMLElement;
