@@ -3,6 +3,7 @@ import Logo from "./Logo.astro";
 ---
 
 <header
+  id="landing-header"
   class="py-6 px-10 w-full flex items-center justify-between fixed top-0 z-40 text-white"
 >
   <div class="flex flex-grow basis-0">
@@ -11,7 +12,7 @@ import Logo from "./Logo.astro";
 
   <nav>
     <ul
-      class="flex px-4 py-4 text-xs text-white font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
+      class="flex px-4 py-4 text-xs text-current transition-colors duration-1000 font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
     >
       <li><a href=""></a>Model S</li>
       <li><a href=""></a>Model 3</li>
@@ -23,7 +24,7 @@ import Logo from "./Logo.astro";
   </nav>
   <nav class="flex flex-grow basis-0 justify-end">
     <ul
-      class="flex px-4 py-4 text-xs text-white font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
+      class="flex px-4 py-4 text-xs text-current transition-colors duration-1000 font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
     >
       <li><a href=""></a>Support</li>
       <li><a href=""></a>Shop</li>
@@ -32,3 +33,28 @@ import Logo from "./Logo.astro";
     </ul>
   </nav>
 </header>
+
+<script>
+  const $header = document.querySelector("#landing-header") as HTMLElement;
+
+  const observerOptions = {
+    root: null, // defaults to viewport
+    rootMargin: "0px", // as soon as element hits viewport
+    threshold: 0.5, // percentage of visibility needed to fire the callback
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const { isIntersecting } = entry;
+      if (isIntersecting) {
+        const color = entry.target.getAttribute("data-header-color");
+        $header.style.color = color;
+      }
+    });
+  }, observerOptions);
+
+  const $sections = document.querySelectorAll(".landing-section");
+  $sections.forEach((section) => {
+    observer.observe(section);
+  });
+</script>
